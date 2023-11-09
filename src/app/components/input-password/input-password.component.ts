@@ -4,6 +4,7 @@ import { FormControl, ReactiveFormsModule } from "@angular/forms";
 import { PasswordState } from "../../interfaces/password-state";
 import { InputStatus } from "../../enums/input-status";
 import { PasswordStrength } from "../../enums/password-strength";
+import { PasswordPatterns } from "./password-patterns";
 
 @Component({
   selector: 'app-input-password',
@@ -40,21 +41,13 @@ export class InputPasswordComponent implements OnDestroy{
   }
 
   setStrengthType(password: string){
-    const letters = /^[а-яА-Яa-zA-Z]+$/;
-    const digits = /^\d+$/;
-    const symbols =  /^[!@#$%^&*()_+{}\[\]:;<>,.?~\\/-]+$/;
-    const lettersAndSymbols = /^(?=.*[а-яА-Яa-zA-Z])(?=.*[!@#$%^&*()_+{}\[\]:;<>,.?~\\/-])[а-яА-Яa-zA-Z!@#$%^&*()_+{}\[\]:;<>,.?~\\/-]+$/;
-    const digitsAndLetters = /^(?=.*[а-яА-Яa-zA-Z])(?=.*\d)[а-яА-Яa-zA-Z\d]+$/;
-    const symbolsAndDigits =/^(?=.*\d)(?=.*[!@#$%^&*()_+{}\[\]:;<>,.?~\\/-])[\d!@#$%^&*()_+{}\[\]:;<>,.?~\\/-]+$/;
-    const lettersAndDigitsAndSymbols =/^(?=.*[а-яА-Яa-zA-Z])(?=.*\d)(?=.*[!@#$%^&*()_+{}\[\]:;<>,.?~\\/-])[а-яА-Яa-zA-Z\d!@#$%^&*()_+{}\[\]:;<>,.?~\\/-]+$/;
-
-    const onlyLetters = letters.test(password);
-    const onlyDigits = digits.test(password);
-    const onlySymbols = symbols.test(password)    ;
-    const onlyLettersAndSymbols = lettersAndSymbols.test(password);
-    const onlyDigitsAndLetters = digitsAndLetters.test(password);
-    const onlySymbolsAndDigits = symbolsAndDigits.test(password);
-    const onlyLettersAndDigitsAndSymbols = lettersAndDigitsAndSymbols.test(password);
+    const onlyLetters = PasswordPatterns['letters'].test(password);
+    const onlyDigits = PasswordPatterns['digits'].test(password);
+    const onlySymbols = PasswordPatterns['symbols'].test(password)    ;
+    const onlyLettersAndSymbols = PasswordPatterns['lettersAndSymbols'].test(password);
+    const onlyDigitsAndLetters = PasswordPatterns['digitsAndLetters'].test(password);
+    const onlySymbolsAndDigits = PasswordPatterns['symbolsAndDigits'].test(password);
+    const onlyLettersAndDigitsAndSymbols = PasswordPatterns['lettersAndDigitsAndSymbols'].test(password);
 
     if (onlyLetters || onlyDigits || onlySymbols) this.passwordState.strengthStatus = PasswordStrength.easy
     if (onlyLettersAndSymbols || onlyDigitsAndLetters || onlySymbolsAndDigits) this.passwordState.strengthStatus = PasswordStrength.medium
