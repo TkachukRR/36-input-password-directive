@@ -1,7 +1,7 @@
 import { Directive, ElementRef, inject, OnInit, Renderer2, TemplateRef, ViewContainerRef } from '@angular/core';
-import {InputStatus} from "../enums/input-status";
-import {PasswordStrength} from "../enums/password-strength";
-import {PasswordPatterns} from "../components/input-password/password-patterns";
+import { InputStatus } from "../enums/input-status";
+import { PasswordStrength } from "../enums/password-strength";
+import { PasswordPatterns } from "../components/input-password/password-patterns";
 
 @Directive({
   selector: '[appPasswordStatusbar]',
@@ -83,6 +83,4 @@ export class PasswordStatusbarDirective implements OnInit{
 
     return PasswordStrength.unregistered;
   }
-
-
 }
