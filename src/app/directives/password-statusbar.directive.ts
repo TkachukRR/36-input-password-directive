@@ -1,7 +1,7 @@
-import {Directive, ElementRef, inject, OnInit, Renderer2, TemplateRef, ViewContainerRef} from '@angular/core';
-import {InputStatus} from "../enums/input-status";
-import {PasswordStrength} from "../enums/password-strength";
-import {PasswordPatterns} from "../components/input-password/password-patterns";
+import { Directive, ElementRef, inject, OnInit, Renderer2, TemplateRef, ViewContainerRef } from '@angular/core';
+import { InputStatus } from "../enums/input-status";
+import { PasswordStrength } from "../enums/password-strength";
+import { PasswordPatterns } from "../components/input-password/password-patterns";
 
 @Directive({
   selector: '[appPasswordStatusbar]',
@@ -86,7 +86,7 @@ export class PasswordStatusbarDirective implements OnInit{
 
   private handlePasswordStatus(status: PasswordStrength | InputStatus){
     const parentSpan: HTMLSpanElement = this.elementRef.nativeElement.parentElement
-    const statusBarItems = parentSpan.querySelectorAll('.statusbar__item')
+    const statusBarItems: NodeListOf<Element> = parentSpan.querySelectorAll('.statusbar__item')
     const firstItem: Element = statusBarItems[0]
     const secondItem: Element = statusBarItems[1]
 
