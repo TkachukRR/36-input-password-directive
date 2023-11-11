@@ -1,3 +1,7 @@
+# Description
+
+Introducing an custom structural directive *appPasswordStatusbar designed to enhance the security and interactivity of the password input process. This directive incorporates a stylish and intuitively designed mechanism for assessing password complexity, providing users with a visual representation of the strength of their chosen passwords.
+
 # Pass
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 17.0.0.
