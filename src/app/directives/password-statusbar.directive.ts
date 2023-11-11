@@ -1,12 +1,4 @@
-import {
-  Directive,
-  ElementRef,
-  inject,
-  OnInit,
-  Renderer2,
-  TemplateRef,
-  ViewContainerRef
-} from '@angular/core';
+import { Directive, ElementRef, inject, OnInit, Renderer2, TemplateRef, ViewContainerRef } from '@angular/core';
 
 @Directive({
   selector: '[appPasswordStatusbar]',
@@ -19,6 +11,7 @@ export class PasswordStatusbarDirective implements OnInit{
   private renderer = inject(Renderer2)
 
   ngOnInit(): void {
+    this.wrapElement()
     this.viewContainer.createEmbeddedView(this.templateRef)
     const inputPassword: HTMLInputElement = this.renderer.selectRootElement('input[type="password"]', this.elementRef.nativeElement)
 
@@ -26,14 +19,23 @@ export class PasswordStatusbarDirective implements OnInit{
       const value = (event.target as HTMLInputElement).value;
       console.log('value:', value);
     });
-    const inputPasswordWrapper = inputPassword.parentElement
-    this.renderer.setStyle(inputPasswordWrapper, 'display','inline-block')
 
     const statusbar: HTMLDivElement = this.createStatusbar()
     this.renderer.appendChild(inputPassword.parentNode, statusbar)
   }
 
-  createStatusbar(): HTMLDivElement {
+
+  private wrapElement() {
+    const wrapper = this.renderer.createElement('span');
+    const element = this.elementRef.nativeElement;
+    const parent = this.renderer.parentNode(element);
+    this.renderer.setStyle(wrapper, 'display','inline-block')
+    parent.insertBefore(wrapper, element);
+    parent.removeChild(element);
+    this.renderer.appendChild(wrapper, element);
+  }
+
+  private createStatusbar(): HTMLDivElement {
     const divBar: HTMLDivElement = this.renderer.createElement('div')
 
     const firstInsideBlock = this.renderer.createElement('div')
