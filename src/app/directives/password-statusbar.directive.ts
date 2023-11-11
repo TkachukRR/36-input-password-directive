@@ -1,7 +1,7 @@
-import { Directive, ElementRef, inject, OnInit, Renderer2, TemplateRef, ViewContainerRef } from '@angular/core';
-import { InputStatus } from "../enums/input-status";
-import { PasswordStrength } from "../enums/password-strength";
-import { PasswordPatterns } from "../components/input-password/password-patterns";
+import {Directive, ElementRef, inject, OnInit, Renderer2, TemplateRef, ViewContainerRef} from '@angular/core';
+import {InputStatus} from "../enums/input-status";
+import {PasswordStrength} from "../enums/password-strength";
+import {PasswordPatterns} from "../components/input-password/password-patterns";
 
 @Directive({
   selector: '[appPasswordStatusbar]',
@@ -20,8 +20,8 @@ export class PasswordStatusbarDirective implements OnInit{
 
     this.renderer.listen(inputPassword,'input', (event) => {
       const value = (event.target as HTMLInputElement).value;
-      const inputStatus: string = this.getInputValueStatus(value);
-      console.log('value:', value, inputStatus);
+      const inputStatus: InputStatus | PasswordStrength = this.getInputValueStatus(value);
+      this.handlePasswordStatus(inputStatus)
     });
 
     const statusbar: HTMLDivElement = this.createStatusbar()
@@ -82,5 +82,39 @@ export class PasswordStatusbarDirective implements OnInit{
     if (onlyLettersAndDigitsAndSymbols) return PasswordStrength.strong;
 
     return PasswordStrength.unregistered;
+  }
+
+  private handlePasswordStatus(status: PasswordStrength | InputStatus){
+    const parentSpan: HTMLSpanElement = this.elementRef.nativeElement.parentElement
+    const statusBarItems = parentSpan.querySelectorAll('.statusbar__item')
+    const firstItem: Element = statusBarItems[0]
+    const secondItem: Element = statusBarItems[1]
+
+    statusBarItems.forEach(item => this.removeItemClasses(item))
+
+    switch (status) {
+      case InputStatus.short:
+        statusBarItems.forEach(item => this.renderer.addClass(item, 'statusbar__item--short'));
+        break;
+      case PasswordStrength.easy:
+        this.renderer.addClass(firstItem, 'statusbar__item--easy');
+        break;
+      case PasswordStrength.medium:
+        this.renderer.addClass(firstItem, 'statusbar__item--medium');
+        this.renderer.addClass(secondItem, 'statusbar__item--medium');
+        break;
+      case PasswordStrength.strong:
+        statusBarItems.forEach(item => this.renderer.addClass(item, 'statusbar__item--strong'));
+        break;
+      default:
+        break;
+    }
+  }
+
+  private removeItemClasses(item: Element){
+    this.renderer.removeClass(item, 'statusbar__item--short');
+    this.renderer.removeClass(item, 'statusbar__item--easy');
+    this.renderer.removeClass(item, 'statusbar__item--medium');
+    this.renderer.removeClass(item, 'statusbar__item--strong');
   }
 }
